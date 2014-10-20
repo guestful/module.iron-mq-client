@@ -1,4 +1,5 @@
-=== Guestful :: Module :: Iron MQ Client ===
+Guestful :: Module :: Iron MQ Client
+====================================
 
 And in your POM:
 
