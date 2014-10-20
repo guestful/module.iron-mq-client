@@ -12,3 +12,5 @@ And in your POM:
 ```
 
 Checkout last version [here](https://bintray.com/guestful/maven/guestful.module.iron-mq-client/view)
+
+[![Build Status](https://drone.io/github.com/guestful/module.iron-mq-client/status.png)](https://drone.io/github.com/guestful/module.iron-mq-client/latest)
