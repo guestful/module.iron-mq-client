@@ -45,6 +45,13 @@
         <tag>HEAD</tag>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>bintray</id>
+            <url>http://dl.bintray.com/guestful/maven</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
