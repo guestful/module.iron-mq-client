@@ -28,6 +28,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -85,12 +87,26 @@ public class IronQueue {
         }
     }
 
+    public void setSubscribers(List<IronSubscriber> subscribers) {
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+        for (IronSubscriber subscriber : subscribers) {
+            arrayBuilder.add(subscriber.toJson());
+        }
+        JsonObject body = Json.createObjectBuilder()
+            .add("subscribers", arrayBuilder)
+            .build();
+        Response response = getProject().request(getProject().getSettings(), HttpMethod.POST, "queues/" + getEncodedQueueName(), body);
+        if (response.getStatusInfo().getFamily() != Response.Status.Family.SUCCESSFUL) {
+            throw new IronClientException(Collections.singletonList(body), response);
+        }
+    }
+
     public void offer(JsonObject message) {
-        offer(Arrays.asList(message), getProject().getSettings());
+        offer(Collections.singletonList(message), getProject().getSettings());
     }
 
     public void offer(JsonObject message, long delay, TimeUnit unit) {
-        offer(Arrays.asList(message), getProject().getSettings().copy().setMessageDelay(delay, unit));
+        offer(Collections.singletonList(message), getProject().getSettings().copy().setMessageDelay(delay, unit));
     }
 
     public void offer(JsonObject... messages) {
@@ -106,7 +122,7 @@ public class IronQueue {
     }
 
     public void offer(JsonObject message, IronSettings settings) {
-        offer(Arrays.asList(message), settings);
+        offer(Collections.singletonList(message), settings);
     }
 
     public void offer(Collection<JsonObject> messages, IronSettings settings) {
